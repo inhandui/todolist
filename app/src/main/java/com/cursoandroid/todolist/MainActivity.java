@@ -24,22 +24,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtTarefa = findViewById(R.id.txtTarefa);
-        btnAdicionar = findViewById(R.id.btnAdicionar);
-        lvTarefas = findViewById(R.id.lvTarefas);
+        try {
+            txtTarefa = findViewById(R.id.txtTarefa);
+            btnAdicionar = findViewById(R.id.btnAdicionar);
+            lvTarefas = findViewById(R.id.lvTarefas);
 
-        //Creating data base
-        banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
+            //Creating data base
+            banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
 
-        //Creating table
-        banco.execSQL("CREATE TABLE IF NOT EXISTS tarefas(id INTERGER PRIMARY KEY AUTOINCREMENT, tarefa VARCHAR)");
+            //Creating table
+            banco.execSQL("CREATE TABLE IF NOT EXISTS tarefas(id INTERGER PRIMARY KEY AUTOINCREMENT, tarefa VARCHAR)");
 
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                entradaTarefa = txtTarefa.getText().toString();
-                banco.execSQL("INSERT INTO tarefas (tarefa) VALUES('" + entradaTarefa + "')");
-            }
-        });
+            btnAdicionar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    entradaTarefa = txtTarefa.getText().toString();
+                    banco.execSQL("INSERT INTO tarefas (tarefa) VALUES('" + entradaTarefa + "')");
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
