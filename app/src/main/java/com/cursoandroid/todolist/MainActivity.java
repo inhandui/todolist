@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,5 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Creating table
         banco.execSQL("CREATE TABLE IF NOT EXISTS tarefas(id INTERGER PRIMARY KEY AUTOINCREMENT, tarefa VARCHAR)");
+
+        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
