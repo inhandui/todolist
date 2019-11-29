@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SQLiteDatabase banco;
 
+    private String entradaTarefa;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                entradaTarefa = txtTarefa.getText().toString();
+                banco.execSQL("INSERT INTO tarefas (tarefa) VALUES('" + entradaTarefa + "')");
             }
         });
     }
