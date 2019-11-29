@@ -2,6 +2,7 @@ package com.cursoandroid.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView lvTarefas;
 
     private SQLiteDatabase banco;
+    private Cursor cursor;
 
     private String entradaTarefa;
 
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     banco.execSQL("INSERT INTO tarefas (tarefa) VALUES('" + entradaTarefa + "')");
                 }
             });
+
+            cursor = banco.rawQuery("SELECT * FROM taferas", null);
         } catch (Exception e){
             e.printStackTrace();
         }
