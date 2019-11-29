@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SQLiteDatabase banco;
     private Cursor cursor;
+    private int indiceColunaId;
+    private int indiceColunaTarefa;
 
     private String entradaTarefa;
 
@@ -46,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
             });
 
             cursor = banco.rawQuery("SELECT * FROM taferas", null);
+
+            indiceColunaId = cursor.getColumnIndex("id");
+            indiceColunaTarefa = cursor.getColumnIndex("tarefa");
+
+
+
         } catch (Exception e){
             e.printStackTrace();
         }
