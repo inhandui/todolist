@@ -27,5 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Creating data base
         banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
+
+        //Creating table
+        banco.execSQL("CREATE TABLE IF NOT EXISTS tarefas(id INTERGER PRIMARY KEY AUTOINCREMENT, tarefa VARCHAR)");
     }
 }
