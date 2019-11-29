@@ -2,4 +2,6 @@
     <string name="app_name">To Do List</string>
     <string name="txtDicaTarefa">Digite sua tarefa</string>
     <string name="btnAdicionar">Adicionar</string>
+    <string name="tarefaVazia">Digite uma tarefa</string>
+    <string name="tarefaSalva">Tarefa salva</string>
 </resources>
