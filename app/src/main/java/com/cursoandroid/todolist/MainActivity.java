@@ -47,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            //get cursor
             cursor = banco.rawQuery("SELECT * FROM taferas", null);
 
+            //get columns index
             indiceColunaId = cursor.getColumnIndex("id");
             indiceColunaTarefa = cursor.getColumnIndex("tarefa");
 
-
+            //set cursor to first element
+            cursor.moveToFirst();
 
         } catch (Exception e){
             e.printStackTrace();
