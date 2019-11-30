@@ -4,4 +4,5 @@
     <string name="btnAdicionar">Adicionar</string>
     <string name="tarefaVazia">Digite uma tarefa</string>
     <string name="tarefaSalva">Tarefa salva</string>
+    <string name="tarefaRemovida">Tarefa removida</string>
 </resources>

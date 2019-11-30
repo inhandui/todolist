@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> listaTarefas;
+    private ArrayList<Integer> listaId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
             txtTarefa = findViewById(R.id.txtTarefa);
             btnAdicionar = findViewById(R.id.btnAdicionar);
 
-            //Creating list
-            listaTarefas = new ArrayList<String>();
+            //get list view reference
+            lvTarefas = findViewById(R.id.lvTarefas);
 
             //Creating data base
             banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
                     salvarTarefa(txtTarefa.getText().toString());
                 }
             });
+
+            lvTarefas.setLongClickable(true);
+            lvTarefas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    removerTarefa( listaId.get(position) );
+                    return true;
+                }
+            });
+
 
             recuperarTarefa();
 
@@ -88,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
             indiceColunaId = cursor.getColumnIndex("id");
             indiceColunaTarefa = cursor.getColumnIndex("tarefa");
 
-            //get list view reference
-            lvTarefas = findViewById(R.id.lvTarefas);
+            //Creating list
+            listaTarefas = new ArrayList<String>();
+            listaId = new ArrayList<Integer>();
 
             //Creating adapter
             adapter = new ArrayAdapter<String>(getApplicationContext(),
@@ -104,8 +117,20 @@ public class MainActivity extends AppCompatActivity {
 
             while (cursor != null) {
                 listaTarefas.add(cursor.getString(indiceColunaTarefa));
+                listaId.add(Integer.parseInt(cursor.getString(indiceColunaId)));
                 cursor.moveToNext();
             }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void removerTarefa(Integer id){
+        try {
+            banco.execSQL("DELETE FROM tarefas WHERE id=" + id);
+            Toast.makeText(MainActivity.this, R.string.tarefaRemovida, Toast.LENGTH_SHORT).show();
+            recuperarTarefa();
 
         }catch (Exception e){
             e.printStackTrace();
