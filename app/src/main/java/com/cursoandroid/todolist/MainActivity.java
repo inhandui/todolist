@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
             //Creating adapter
             adapter = new ArrayAdapter<String>(getApplicationContext(),
-                    android.R.layout.simple_list_item_2,
-                    android.R.id.text2,
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1,
                     listaTarefas);
 
             lvTarefas.setAdapter(adapter);
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
             cursor.moveToFirst();
 
             while (cursor != null) {
-                Log.i("RESULTADO - ", "ID [" + cursor.getString(indiceColunaId) + "] " + cursor.getString(indiceColunaTarefa));
                 listaTarefas.add(cursor.getString(indiceColunaTarefa));
                 cursor.moveToNext();
             }
