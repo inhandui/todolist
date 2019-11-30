@@ -7,10 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private int indiceColunaId;
     private int indiceColunaTarefa;
 
-    private String entradaTarefa;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> listaTarefas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             txtTarefa = findViewById(R.id.txtTarefa);
             btnAdicionar = findViewById(R.id.btnAdicionar);
-            lvTarefas = findViewById(R.id.lvTarefas);
 
             //Creating data base
             banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
@@ -44,25 +47,11 @@ public class MainActivity extends AppCompatActivity {
             btnAdicionar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    entradaTarefa = txtTarefa.getText().toString();
-                    salvarTarefa(entradaTarefa);
+                    salvarTarefa(txtTarefa.getText().toString());
                 }
             });
 
-            //get cursor
-            cursor = banco.rawQuery("SELECT * FROM tarefas", null);
-
-            //get columns index
-            indiceColunaId = cursor.getColumnIndex("id");
-            indiceColunaTarefa = cursor.getColumnIndex("tarefa");
-
-            //set cursor to first element
-            cursor.moveToFirst();
-
-            while (cursor != null){
-                Log.i("RESULTADO - ", "ID [" + cursor.getString(indiceColunaId) + "] " + cursor.getString(indiceColunaTarefa));
-                cursor.moveToLast();
-            }
+            recuperarTarefa();
 
         } catch (Exception e){
             e.printStackTrace();
@@ -74,9 +63,49 @@ public class MainActivity extends AppCompatActivity {
             if (!tarefa.equals("")){
                 banco.execSQL("INSERT INTO tarefas (tarefa) VALUES('" + tarefa + "')");
                 Toast.makeText(MainActivity.this, R.string.tarefaSalva, Toast.LENGTH_SHORT).show();
+                txtTarefa.setText("");
+                recuperarTarefa();
             }
             else{
                 Toast.makeText(MainActivity.this, R.string.tarefaVazia, Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void recuperarTarefa(){
+
+        try {
+            //get cursor
+            cursor = banco.rawQuery("SELECT * FROM tarefas ORDER BY id DESC", null);
+
+            //get columns index
+            indiceColunaId = cursor.getColumnIndex("id");
+            indiceColunaTarefa = cursor.getColumnIndex("tarefa");
+
+            //get list view reference
+            lvTarefas = findViewById(R.id.lvTarefas);
+
+            //Creating list
+            listaTarefas = new ArrayList<String>();
+
+            //Creating adapter
+            adapter = new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_list_item_2,
+                    android.R.id.text2,
+                    listaTarefas);
+
+            lvTarefas.setAdapter(adapter);
+
+            //set cursor to first element
+            cursor.moveToFirst();
+
+            while (cursor != null) {
+                Log.i("RESULTADO - ", "ID [" + cursor.getString(indiceColunaId) + "] " + cursor.getString(indiceColunaTarefa));
+                listaTarefas.add(cursor.getString(indiceColunaTarefa));
+                cursor.moveToNext();
             }
 
         }catch (Exception e){
