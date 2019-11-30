@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
             txtTarefa = findViewById(R.id.txtTarefa);
             btnAdicionar = findViewById(R.id.btnAdicionar);
 
+            //Creating list
+            listaTarefas = new ArrayList<String>();
+
             //Creating data base
             banco = openOrCreateDatabase("appTarefas", MODE_PRIVATE, null);
 
@@ -87,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
             //get list view reference
             lvTarefas = findViewById(R.id.lvTarefas);
-
-            //Creating list
-            listaTarefas = new ArrayList<String>();
 
             //Creating adapter
             adapter = new ArrayAdapter<String>(getApplicationContext(),
